@@ -1,3 +1,3 @@
 AOT IS THE BEST ANIME
-eren
+eren yeger
 Shinzou Wo Sasageyo
