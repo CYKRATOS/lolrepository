@@ -49,7 +49,7 @@ void main(){
 }
 
 /*void display(){
-		printf("You have entered the below elements:\n");
+		printf("Original Array:\n");
 			for(i=0;i<n;i++){
 			printf("%d",a[i]);
 		}
