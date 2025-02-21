@@ -1,33 +1,16 @@
-what is ACID properties with regards to the dbms system explain with example?
+SELECT S.* FROM STUDENT S JOIN SC ON S.rollno = SC.rollno JOIN COURSE C ON SC.courseno = C.courseno WHERE C.coursename = 'Database Management System';
 
-short notes on triggers and its features? \
+-- 5. Display names of students who scored more than 70% in Computer Networks and have no 'F' in any subject
+SELECT S.name FROM STUDENT S JOIN SC ON S.rollno = SC.rollno JOIN COURSE C ON SC.courseno = C.courseno WHERE C.coursename = 'Computer Networks' AND SC.marks > (0.7 * C.max_marks) AND NOT EXISTS ( SELECT * FROM SC WHERE rollno = S.rollno AND marks < C.pass_marks);
 
-ChatGPT
+-- 6. Display average marks obtained by each student
+SELECT rollno, AVG(marks) AS avg_marks FROM SC GROUP BY rollno;
 
-Log in
-You said:
-What is ACID properties with regards to the database manegement system and explain with example 
-ChatGPT said:
-ACID properties are a set of four key properties that ensure reliable processing of database transactions in a Database Management System (DBMS). They stand for Atomicity, Consistency, Isolation, and Durability. Here's a breakdown of each:
+-- 7. Select all courses where passing marks are more than 30% of average maximum mark
+SELECT * FROM COURSE WHERE pass_marks > 0.3 * (SELECT AVG(max_marks) FROM COURSE);
 
-1. Atomicity
-Definition: Atomicity ensures that a transaction is treated as a single unit, which either completes entirely or doesn't execute at all. If one part of the transaction fails, the entire transaction is rolled back, ensuring no partial updates occur.
-Example: Suppose you're transferring money from account A to account B. The transaction includes two operations:
-Debit account A
-Credit account B If an error occurs after the debit from account A but before the credit to account B, the system will roll back the entire transaction, so the money is neither deducted from account A nor added to account B.
-2. Consistency
-Definition: Consistency ensures that a transaction takes the database from one valid state to another valid state, maintaining all predefined rules (e.g., integrity constraints, foreign key relationships). After a transaction, the database must be in a consistent state.
-Example: In a banking system, if there’s a rule that says an account balance cannot be negative, consistency ensures that any transaction does not violate this rule. If you try to withdraw more money than is available in an account, the system will prevent the transaction, ensuring the database remains consistent.
-3. Isolation
-Definition: Isolation ensures that the operations of one transaction are not visible to other transactions until the transaction is complete. Even if multiple transactions are executed concurrently, they do not interfere with each other, ensuring that intermediate states of a transaction are not exposed to other transactions.
-Example: Two people are attempting to withdraw money from the same bank account at the same time. If both transactions were isolated, one would execute completely before the other (in a non-conflicting manner), preventing issues like both withdrawals occurring even though there isn’t enough balance.
-4. Durability
-Definition: Durability guarantees that once a transaction is committed, its changes are permanent and will survive any system failures (e.g., crashes). Even if the system crashes immediately after a transaction is completed, the changes will still be preserved in the database.
-Example: After a successful transfer of funds between accounts, if the database system crashes, once it restarts, the changes made during the transaction will still be present in the database, ensuring no data loss.
-ACID Example in Banking:
-Consider a scenario where a user wants to transfer money from Account A to Account B:
+-- 8. Display details of students who are born in 1980 or 1982
+SELECT * FROM STUDENT WHERE EXTRACT(YEAR FROM birthdate) IN (1980, 1982);
 
-Atomicity: The transfer is a single transaction. If there’s an issue at any point (e.g., insufficient funds, network failure), the entire process is rolled back, so no money is transferred.
-Consistency: The system checks that Account A has enough funds to complete the transfer. If Account A doesn’t have sufficient balance, the system will prevent the transaction from proceeding.
-Isolation: While this transaction is being processed, other transactions (e.g., someone else transferring money from Account C to Account D) won't see the intermediate state of this transaction. They will only see the final result once the transaction is complete.
-Durability: Once the transfer is completed successfully, the changes (debit from Account A and credit to Account B) will persist in the database, even if the system crashes right afterward.
+-- 9. Create a view that displays student course number and its corresponding marks
+CREATE VIEW StudentCourseMarks AS SELECT S.rollno, S.name, C.courseno, C.coursename, SC.marks FROM STUDENT S JOIN SC ON S.rollno = SC.rollno JOIN COURSE C ON SC.courseno = C.courseno;
