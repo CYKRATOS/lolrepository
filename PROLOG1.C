@@ -6,7 +6,7 @@ void linear(int key);
 void binary(int key);
 //void display();
 int a[10],n,i;
-
+int j,t,x;
 void main(){
 	int op,key;
  clrscr();
@@ -22,7 +22,6 @@ void main(){
 		exit(0);
 	}
 	else{
-	int j,t,x;
 		for(x = 0; x < n-1; i++){
 			for(j = 0; j < n-x-1; j++){
 				if(a[j] > a[j+1]){
